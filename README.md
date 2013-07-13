@@ -10,7 +10,7 @@ var RandomStream = require('random-stream')
 var options = {
   namer : namer
 , swapper : swapper
-, tdelta : 1000
+, tdelta : 1000 // in milliseconds
 , path : "."
 , fsops : {
     flags: "a"
@@ -27,7 +27,7 @@ function namer () {
 }
 
 function swapper () {
-  return Math.round(parseInt(getSecond()) / 5)
+  return Math.floor(parseInt(getSecond()) / 5)
 }
 
 function getMinute () {
@@ -51,7 +51,7 @@ Other useful ideas for `swapper` would be function that returns a different valu
 ```javascript
 function swapper () {
   var d = new Date()
-  return ('0' + d.getUTCDate() ).slice(-2)
+  return d.getUTCDate()
 }
 ```
 
