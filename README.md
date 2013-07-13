@@ -4,7 +4,7 @@ Write to a writable file-stream that swaps out it's underlying file resources ac
 
 ## Example
 ```javascript
-var timeFileStream = require('../.')
+var swapStream = require('../.')
 var RandomStream = require('random-stream')
 
 var options = {
@@ -18,9 +18,9 @@ var options = {
   }
 }
 
-var timeStream = timeFileStream(options)
+var ss = swapStream(options)
 
-RandomStream().pipe(timeStream)
+RandomStream().pipe(ss)
 
 function namer () {
   return "t-" + getSecond() + "-" + getMinute()
@@ -55,7 +55,7 @@ function swapper () {
 }
 ```
 
-Another way to think about `swapper` is that it is a function that is repeatedly called. When it's return value changes, the underlying file resource being written too is swapped out, with a new name given by `namer`. In this way the fileswap could be controlled by anything, such as time, network or CPU heat.
+Another way to think about `swapper` is that it is a function that is repeatedly called to check it's return value against the last value. When the return value changes, the underlying file resource being written to is swapped out with a new name given by `namer`. In this way the fileswap could be controlled by anything, such as time, network or CPU heat.
 
 ## Options
 The options object has the following fields

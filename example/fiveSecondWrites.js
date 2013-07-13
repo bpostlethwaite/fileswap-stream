@@ -1,4 +1,4 @@
-var timeFileStream = require('../.')
+var swapStream = require('../.')
 var RandomStream = require('random-stream')
 
 var options = {
@@ -12,9 +12,9 @@ var options = {
   }
 }
 
-var timeStream = timeFileStream(options)
+var ss = swapStream(options)
 
-RandomStream().pipe(timeStream)
+RandomStream().pipe(ss)
 
 function namer () {
   return "t-" + getSecond() + "-" + getMinute()
