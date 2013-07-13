@@ -5,7 +5,7 @@ var options = {
   namer : namer
 , swapper : swapper
 , tdelta : 1000
-//, path : "."
+, path : "."
 , fsops : {
     flags: "a"
   , encoding: "utf8"
