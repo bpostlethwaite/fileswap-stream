@@ -43,7 +43,7 @@ function getSecond () {
 this will produce the files full of random junk
 
 ```shell
-t-27-07  t-28-07  t-33-07  t-38-07  t-43-07
+t-23-07  t-28-07  t-33-07  t-38-07  t-43-07
 ```
 every five seconds as determined by `swapper`.
 
@@ -55,7 +55,7 @@ function swapper () {
 }
 ```
 
-Another way to think about `swapper` is that it is a function that is repeatedly called to check it's return value against the last value. When the return value changes, the underlying file resource being written to is swapped out with a new name given by `namer`. In this way the fileswap could be controlled by anything, such as time, network or CPU heat.
+Under-the-hood the function `swapper` is repeatedly called every `tdelta` milliseconds and its return value is checked against the previous value. When the return value changes, the underlying file resource being written to is swapped out with a new name given by `namer`. In this way the fileswap could be controlled by anything, such as time, network or CPU heat. So long as the function is syncronous! Async functionality could be added.
 
 ## Options
 The options object has the following fields
