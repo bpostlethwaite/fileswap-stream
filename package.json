@@ -1,0 +1,28 @@
+{
+  "name": "fileswap-stream.js",
+  "version": "0.0.2",
+  "description": "Write to a writable file-stream that swaps out it's underlying file resources according to timer and naming functions",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bpostlethwaite/timer-fileStream.git"
+  },
+  "keywords": [
+    "timer",
+    "timer-stream",
+    "filename",
+    "file-stream",
+    "name"
+  ],
+  "author": "ben postlethwaite",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bpostlethwaite/timer-fileStream/issues"
+  }
+}
