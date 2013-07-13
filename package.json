@@ -1,7 +1,7 @@
 {
   "name": "fileswap-stream",
-  "version": "0.0.3",
-  "description": "Write to a writable file-stream that swaps out it's underlying file resources according to timer and naming functions",
+  "version": "0.1.2",
+  "description": "Write to a writable file-stream that swaps out it's underlying file resources according to swapper and namer functions",
   "main": "index.js",
   "directories": {
     "example": "example"
