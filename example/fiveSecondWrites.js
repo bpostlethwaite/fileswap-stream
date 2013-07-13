@@ -1,11 +1,11 @@
-var timeFileStream = require('./time-fileStream')
-
+var timeFileStream = require('../.')
+var RandomStream = require('random-stream')
 
 var options = {
   namer : namer
-, timer : timer
+, swapper : swapper
 , tdelta : 1000
-, path : "."
+//, path : "."
 , fsops : {
     flags: "a"
   , encoding: "utf8"
@@ -14,13 +14,14 @@ var options = {
 
 var timeStream = timeFileStream(options)
 
+RandomStream().pipe(timeStream)
 
 function namer () {
   return "t-" + getSecond() + "-" + getMinute()
 }
 
-function timer () {
-  Math.round(parseInt(getSecond()) / 5)
+function swapper () {
+  return Math.round(parseInt(getSecond()) / 5)
 }
 
 function getMinute () {

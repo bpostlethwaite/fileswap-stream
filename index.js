@@ -10,13 +10,13 @@ var _write = function(chunk, encoding, callback) {
 }
 
 /*
- * Create a new sink when timer carries over
+ * Create a new sink when swapper carries over
  * Check time every tdelta milliseconds
  */
 function setSink (fops, path) {
 
   if (!path)
-    path = ''
+    path = '.'
 
   return function (fname) {
 
@@ -36,16 +36,16 @@ function setSink (fops, path) {
 
 }
 
-function sinkTimer (timer, tdelta, namefn) {
+function sinkSwapper (swapper, tdelta, namefn) {
 
   var self = this
-  var time = timer()
+  var lastValue = swapper()
 
   return setInterval(
     function () {
-      if (time !== timer()) {
+      if (lastValue !== swapper()) {
         self.setSink( namefn() )
-        time = timer()
+        lastValue = swapper()
       }
     }, tdelta)
 }
@@ -57,8 +57,8 @@ module.exports = function (o) {
   s.setSink = setSink(o.fops, o.path)
   s.setSink( o.namer() )
 
-  sinkTimer = sinkTimer.bind(s)
-  s.iv = sinkTimer(o.timer, o.tdelta, o.namer)
+  sinkSwapper = sinkSwapper.bind(s)
+  s.iv = sinkSwapper(o.swapper, o.tdelta, o.namer)
 
   s.on('close', function () {
     clearInterval(s.iv)
