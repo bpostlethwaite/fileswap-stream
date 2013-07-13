@@ -1,3 +1,8 @@
+/*
+ * fileswap-stream
+ * Ben Postlethwaite
+ * 2013 MIT
+ */
 var Writable = require('stream').Writable
   , fs = require('fs')
 
