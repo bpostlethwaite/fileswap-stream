@@ -1,6 +1,6 @@
 # fileswap-stream
 
-Write to a writable file-stream that swaps out it's underlying file resources according to swapper and naming functions. This can be used for a persistent log stream - just stream to it 24/7 and let it swap out to new files hourly or daily.
+Write to a writable file-stream that swaps out it's underlying file resources according to swapper and naming functions. This can be used for a persistent log stream - just stream to it 24/7 and let it swap out to new files whenever you trigger it to.
 
 ## Example
 ```javascript
