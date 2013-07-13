@@ -77,7 +77,7 @@ options passed to `fs.createWriteStream(fsops)`
 
 ## Install
 ```shell
-npm install swapfile-stream
+npm install fileswap-stream
 ```
 
 ### License
