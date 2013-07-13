@@ -58,16 +58,29 @@ function swapper () {
 }
 ```
 
-## Example 2 - Fast Swap
-Here the rates are juiced so that `tdelta`, the rate we compare `swapper` values, is set for 20 milliseconds. `swapper` is set to change the underlying file resource every 100 milliseconds and writes are made every millisecond. A numerical series is written to the files and summed. This sum should `==` the sum actually written to disk.
-
+## Example 2 - Net Swap
 ```javascript
 var swapStream = require('../.')
+  , RandomStream = require('random-stream')
+  , net = require('net')
+
+var name = "name-0"
+  , swap = 0
+
+
+function namer () {
+  return name
+}
+
+function swapper () {
+  return swap
+}
+
 
 var options = {
   namer : namer
 , swapper : swapper
-, tdelta : 20
+, tdelta : 250
 , path : "."
 , fsops : {
     flags: "a"
@@ -76,42 +89,69 @@ var options = {
 }
 
 var ss = swapStream(options)
+var rs = RandomStream({min:50, max:100})
 
-var iv
-iv = setInterval(writeDigits(ss, 0), 1)
+rs.pipe(ss)
 
-function namer () {
-  return "t-" + getMillisecond() + "-" + getSecond()
+
+function connectClient () {
+  /*
+   * Update the swapper and namer return values
+   */
+  var client = net.connect(8124)
+  client.on('data', function(data) {
+    data = JSON.parse(data.toString())
+    name = data.name
+    swap = data.swap
+    console.log(name, swap)
+  })
+  client.on('close', function () {
+    process.exit()
+  })
 }
 
-function swapper () {
-  return Math.floor(parseInt(getMillisecond()) / 100)
-}
 
-function getMillisecond () {
-  var d = new Date()
-  return ('00' + d.getMilliseconds() ).slice(-3)
-}
+/*
+ * Server in a galaxy far far away
+ */
+var server = net.createServer(
+  function(c) {
 
-function getSecond () {
-  var d = new Date()
-  return ('0' + d.getSeconds() ).slice(-2)
-}
+    var data = {}
+      , count = 0
+    data.name = "name-"+count
+    data.swap = 0
+    c.pipe(c)
 
-function writeDigits(ss, count) {
-  return function () {
-    ss.write(count++ + "\n")
-    if (count === 200) {
-      clearInterval(iv)
-      var sum = 0
-      for (var i = 0; i < 200; i++) sum += i
-      console.log("sum should ==", sum)
-      process.exit()
-    }
-  }
-}
+    var iv = setInterval(
+
+      function () {
+        if (data.swap) data.swap = 0
+        else data.swap = 1
+        data.name = "name-"+count
+        c.write(JSON.stringify(data))
+        count++
+
+        if (count > 5) {
+          clearInterval(iv)
+          c.end()
+          server.close()
+        }
+
+      }, 1000)
+  }).listen(8124).on('listening', connectClient )
 ```
-which outputs
+
+
+## Pseudo-Test Fast Swap
+Here the rates are juiced so that `tdelta`, the rate we compare `swapper` values, is set for 20 milliseconds. `swapper` is set to change the underlying file resource every 100 milliseconds and writes are made every millisecond. A numerical series is written to the files and summed. This sum should `==` the sum actually written to disk.
+
+running
+```shell
+examples>>node fastSwap.js
+```
+
+outputs
 ```shell
 sum should == 19900
 ```
