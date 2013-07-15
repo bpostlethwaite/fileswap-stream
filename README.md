@@ -2,7 +2,7 @@
 
 Write to a writable file-stream that swaps out it's underlying file resources according to swapper and naming functions. This can be used for a persistent log or data stream - just stream to it 24/7 and let it swap out to new files whenever you trigger it to.
 
-Under-the-hood the function `swapper` is repeatedly called every `tdelta` milliseconds and its return value is checked against the previous value. When the return value changes, the underlying file resource being written to is swapped out with a new name given by `namer`. In this way the fileswap could be controlled by anything, such as time, network or CPU heat. So long as the `swapper` function is syncronous! Though, async functionality can be added.
+Under-the-hood the function `swapper` is repeatedly called every `tdelta` milliseconds and its return value is checked against the previous value. When the return value changes, the underlying file resource being written to is swapped out for a new file with a name given by `namer`. In this way the fileswap could be controlled by anything, such as time, network or CPU heat. So long as the `swapper` function is syncronous! Though, async functionality can be added.
 
 
 ## Example 1 - normal operation
